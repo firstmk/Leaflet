@@ -1,7 +1,7 @@
-import {CRS} from './CRS';
-import {LonLat} from '../projection/Projection.LonLat';
-import {toTransformation} from '../../geometry/Transformation';
-import * as Util from '../../core/Util';
+import { CRS } from './CRS'
+import { LonLat } from '../projection/Projection.LonLat'
+import { toTransformation } from '../../geometry/Transformation'
+import * as Util from '../../core/Util'
 
 /*
  * @namespace CRS
@@ -14,23 +14,23 @@ import * as Util from '../../core/Util';
  */
 
 export var Simple = Util.extend({}, CRS, {
-	projection: LonLat,
-	transformation: toTransformation(1, 0, -1, 0),
+  projection: LonLat,
+  transformation: toTransformation(1, 0, -1, 0),
 
-	scale: function (zoom) {
-		return Math.pow(2, zoom);
-	},
+  scale: function (zoom) {
+    return Math.pow(2, zoom)
+  },
 
-	zoom: function (scale) {
-		return Math.log(scale) / Math.LN2;
-	},
+  zoom: function (scale) {
+    return Math.log(scale) / Math.LN2
+  },
 
-	distance: function (latlng1, latlng2) {
-		var dx = latlng2.lng - latlng1.lng,
-		    dy = latlng2.lat - latlng1.lat;
+  distance: function (latlng1, latlng2) {
+    var dx = latlng2.lng - latlng1.lng,
+      dy = latlng2.lat - latlng1.lat
 
-		return Math.sqrt(dx * dx + dy * dy);
-	},
+    return Math.sqrt(dx * dx + dy * dy)
+  },
 
-	infinite: true
-});
+  infinite: true
+})

@@ -5,81 +5,83 @@ title: Using GeoJSON with Leaflet
 
 <h3>Using GeoJSON with Leaflet</h3>
 
-<p>GeoJSON is becoming a very popular data format among many GIS technologies and services — it's simple, lightweight, straightforward, and Leaflet is quite good at handling it. In this example, you'll learn how to create and interact with map vectors created from <a href="http://geojson.org/">GeoJSON</a> objects.</p>
+<p>GeoJSON is becoming a very popular data format among many GIS technologies and services — it's simple, lightweight,
+  straightforward, and Leaflet is quite good at handling it. In this example, you'll learn how to create and interact
+  with map vectors created from <a href="http://geojson.org/">GeoJSON</a> objects.</p>
 
 <div id="map" class="map" style="height: 250px"></div>
 
 <script src="sample-geojson.js"></script>
 <script>
 
-	var map = L.map('map').setView([39.74739, -105], 13);
+  var map = L.map('map').setView([ 39.74739, -105 ], 13)
 
-	L.tileLayer(MB_URL, {
-		attribution: MB_ATTR,
-		id: 'mapbox.light'
-	}).addTo(map);
+  L.tileLayer(MB_URL, {
+    attribution: MB_ATTR,
+    id: 'mapbox.light'
+  }).addTo(map)
 
-	var baseballIcon = L.icon({
-		iconUrl: 'baseball-marker.png',
-		iconSize: [32, 37],
-		iconAnchor: [16, 37],
-		popupAnchor: [0, -28]
-	});
+  var baseballIcon = L.icon({
+    iconUrl: 'baseball-marker.png',
+    iconSize: [ 32, 37 ],
+    iconAnchor: [ 16, 37 ],
+    popupAnchor: [ 0, -28 ]
+  })
 
-	function onEachFeature(feature, layer) {
-		var popupContent = "<p>I started out as a GeoJSON " +
-				feature.geometry.type + ", but now I'm a Leaflet vector!</p>";
+  function onEachFeature(feature, layer) {
+    var popupContent = '<p>I started out as a GeoJSON ' +
+      feature.geometry.type + ', but now I\'m a Leaflet vector!</p>'
 
-		if (feature.properties && feature.properties.popupContent) {
-			popupContent += feature.properties.popupContent;
-		}
+    if (feature.properties && feature.properties.popupContent) {
+      popupContent += feature.properties.popupContent
+    }
 
-		layer.bindPopup(popupContent);
-	}
+    layer.bindPopup(popupContent)
+  }
 
-	L.geoJson({features: [bicycleRental, campus]}, {
+  L.geoJson({ features: [ bicycleRental, campus ] }, {
 
-		style: function (feature) {
-			return feature.properties && feature.properties.style;
-		},
+    style: function (feature) {
+      return feature.properties && feature.properties.style
+    },
 
-		onEachFeature: onEachFeature,
+    onEachFeature: onEachFeature,
 
-		pointToLayer: function (feature, latlng) {
-			return L.circleMarker(latlng, {
-				radius: 8,
-				fillColor: "#ff7800",
-				color: "#000",
-				weight: 1,
-				opacity: 1,
-				fillOpacity: 0.8
-			});
-		}
-	}).addTo(map);
+    pointToLayer: function (feature, latlng) {
+      return L.circleMarker(latlng, {
+        radius: 8,
+        fillColor: '#ff7800',
+        color: '#000',
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8
+      })
+    }
+  }).addTo(map)
 
-	L.geoJson(freeBus, {
+  L.geoJson(freeBus, {
 
-		filter: function (feature, layer) {
-			if (feature.properties) {
-				// If the property "underConstruction" exists and is true, return false (don't render features under construction)
-				return feature.properties.underConstruction !== undefined ? !feature.properties.underConstruction : true;
-			}
-			return false;
-		},
+    filter: function (feature, layer) {
+      if (feature.properties) {
+        // If the property "underConstruction" exists and is true, return false (don't render features under construction)
+        return feature.properties.underConstruction !== undefined ? !feature.properties.underConstruction : true
+      }
+      return false
+    },
 
-		onEachFeature: onEachFeature
-	}).addTo(map);
+    onEachFeature: onEachFeature
+  }).addTo(map)
 
-	var coorsLayer = L.geoJson(null, {
+  var coorsLayer = L.geoJson(null, {
 
-		pointToLayer: function (feature, latlng) {
-			return L.marker(latlng, {icon: baseballIcon});
-		},
+    pointToLayer: function (feature, latlng) {
+      return L.marker(latlng, { icon: baseballIcon })
+    },
 
-		onEachFeature: onEachFeature
-	}).addTo(map);
+    onEachFeature: onEachFeature
+  }).addTo(map)
 
-	coorsLayer.addData(coorsField);
+  coorsLayer.addData(coorsField)
 
 </script>
 
@@ -89,9 +91,16 @@ title: Using GeoJSON with Leaflet
 
 <p>According to <a href="http://geojson.org">http://geojson.org</a>:</p>
 
-<blockquote>GeoJSON is a format for encoding a variety of geographic data structures. A GeoJSON object may represent a geometry, a feature, or a collection of features. GeoJSON supports the following geometry types: Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, and GeometryCollection. Features in GeoJSON contain a geometry object and additional properties, and a feature collection represents a list of features.</blockquote>
+<blockquote>GeoJSON is a format for encoding a variety of geographic data structures. A GeoJSON object may represent a
+  geometry, a feature, or a collection of features. GeoJSON supports the following geometry types: Point, LineString,
+  Polygon, MultiPoint, MultiLineString, MultiPolygon, and GeometryCollection. Features in GeoJSON contain a geometry
+  object and additional properties, and a feature collection represents a list of features.
+</blockquote>
 
-<p>Leaflet supports all of the GeoJSON types above, but <a href="https://tools.ietf.org/html/rfc7946#section-3.2">Features</a> and <a href="https://tools.ietf.org/html/rfc7946#section-3.3">FeatureCollections</a> work best as they allow you to describe features with a set of properties. We can even use these properties to style our Leaflet vectors. Here's an example of a simple GeoJSON feature:</p>
+<p>Leaflet supports all of the GeoJSON types above, but <a href="https://tools.ietf.org/html/rfc7946#section-3.2">Features</a>
+  and <a href="https://tools.ietf.org/html/rfc7946#section-3.3">FeatureCollections</a> work best as they allow you to
+  describe features with a set of properties. We can even use these properties to style our Leaflet vectors. Here's an
+  example of a simple GeoJSON feature:</p>
 
 <pre><code>var geojsonFeature = {
 	"type": "Feature",
@@ -111,7 +120,8 @@ Beware of the switched order of latitude and longitude in GeoJSON; as per defini
 
 <h3>The GeoJSON layer</h3>
 
-<p>GeoJSON objects are added to the map through a <a href="/reference.html#geojson">GeoJSON layer</a>. To create it and add it to a map, we can use the following code:</p>
+<p>GeoJSON objects are added to the map through a <a href="/reference.html#geojson">GeoJSON layer</a>. To create it and
+  add it to a map, we can use the following code:</p>
 
 <pre><code>L.geoJson(geojsonFeature).addTo(map);</code></pre>
 
@@ -126,7 +136,8 @@ Beware of the switched order of latitude and longitude in GeoJSON; as per defini
 }];
 </code></pre>
 
-<p>Alternatively, we could create an empty GeoJSON layer and assign it to a variable so that we can add more features to it later.</p>
+<p>Alternatively, we could create an empty GeoJSON layer and assign it to a variable so that we can add more features to
+  it later.</p>
 
 <pre><code>var myLayer = L.geoJson().addTo(map);
 myLayer.addData(geojsonFeature);
@@ -136,7 +147,8 @@ myLayer.addData(geojsonFeature);
 
 <h4>style</h4>
 
-<p>The <code>style</code> option can be used to style features two different ways. First, we can pass a simple object that styles all paths (polylines and polygons) the same way:</p>
+<p>The <code>style</code> option can be used to style features two different ways. First, we can pass a simple object
+  that styles all paths (polylines and polygons) the same way:</p>
 
 <pre><code>var myLines = [{
 	"type": "LineString",
@@ -156,7 +168,8 @@ L.geoJson(myLines, {
 	style: myStyle
 }).addTo(map);</code></pre>
 
-<p>Alternatively, we can pass a function that styles individual features based on their properties. In the example below we check the "party" property and style our polygons accordingly:</p>
+<p>Alternatively, we can pass a function that styles individual features based on their properties. In the example below
+  we check the "party" property and style our polygons accordingly:</p>
 
 <pre><code>var states = [{
 	"type": "Feature",
@@ -197,7 +210,11 @@ L.geoJson(states, {
 
 <h4>pointToLayer</h4>
 
-<p>Points are handled differently than polylines and polygons. By default simple markers are drawn for GeoJSON Points. We can alter this by passing a <code>pointToLayer</code> function in a <a href="/reference.html#geojson-options">GeoJSON options</a> object when creating the GeoJSON layer. This function is passed a <a href="/reference.html#latlng">LatLng</a> and should return an instance of ILayer, in this case likely a <a href="/reference.html#marker">Marker</a> or <a href="/reference.html#circlemarker">CircleMarker</a>.</p>
+<p>Points are handled differently than polylines and polygons. By default simple markers are drawn for GeoJSON Points.
+  We can alter this by passing a <code>pointToLayer</code> function in a <a href="/reference.html#geojson-options">GeoJSON
+    options</a> object when creating the GeoJSON layer. This function is passed a <a href="/reference.html#latlng">LatLng</a>
+  and should return an instance of ILayer, in this case likely a <a href="/reference.html#marker">Marker</a> or <a
+    href="/reference.html#circlemarker">CircleMarker</a>.</p>
 
 <p>Here we're using the <code>pointToLayer</code> option to create a CircleMarker:</p>
 
@@ -216,11 +233,13 @@ L.geoJson(someGeojsonFeature, {
 	}
 }).addTo(map);</code></pre>
 
-<p>We could also set the <code>style</code> property in this example &mdash; Leaflet is smart enough to apply styles to GeoJSON points if you create a vector layer like circle inside the <code>pointToLayer</code> function.</p>
+<p>We could also set the <code>style</code> property in this example &mdash; Leaflet is smart enough to apply styles to
+  GeoJSON points if you create a vector layer like circle inside the <code>pointToLayer</code> function.</p>
 
 <h4>onEachFeature</h4>
 
-<p>The <code>onEachFeature</code> option is a function that gets called on each feature before adding it to a GeoJSON layer. A common reason to use this option is to attach a popup to features when they are clicked.</p>
+<p>The <code>onEachFeature</code> option is a function that gets called on each feature before adding it to a GeoJSON
+  layer. A common reason to use this option is to attach a popup to features when they are clicked.</p>
 
 <pre><code>function onEachFeature(feature, layer) {
 	// does this feature have a property named popupContent?
@@ -248,7 +267,10 @@ L.geoJson(geojsonFeature, {
 
 <h4>filter</h4>
 
-<p>The <code>filter</code> option can be used to control the visibility of GeoJSON features. To accomplish this we pass a function as the <code>filter</code> option. This function gets called for each feature in your GeoJSON layer, and gets passed the <code>feature</code> and the <code>layer</code>. You can then utilise the values in the feature's properties to control the visibility by returning <code>true</code> or <code>false</code>.</p>
+<p>The <code>filter</code> option can be used to control the visibility of GeoJSON features. To accomplish this we pass
+  a function as the <code>filter</code> option. This function gets called for each feature in your GeoJSON layer, and
+  gets passed the <code>feature</code> and the <code>layer</code>. You can then utilise the values in the feature's
+  properties to control the visibility by returning <code>true</code> or <code>false</code>.</p>
 
 <p>In the example below "Busch Field" will not be shown on the map.</p>
 
@@ -280,4 +302,5 @@ L.geoJson(someFeatures, {
 	}
 }).addTo(map);</code></pre>
 
-<p>View the <a href="geojson-example.html">example page</a> to see in detail what is possible with the GeoJSON layer.</p>
+<p>View the <a href="geojson-example.html">example page</a> to see in detail what is possible with the GeoJSON layer.
+</p>

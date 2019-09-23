@@ -1,9 +1,11 @@
-export {PosAnimation} from './PosAnimation';
+export { PosAnimation } from './PosAnimation'
 
-import * as DomEvent from './DomEvent';
-export {DomEvent};
+import * as DomEvent from './DomEvent'
 
-import * as DomUtil from './DomUtil';
-export {DomUtil};
+export { DomEvent }
 
-export {Draggable} from './Draggable';
+import * as DomUtil from './DomUtil'
+
+export { DomUtil }
+
+export { Draggable } from './Draggable'

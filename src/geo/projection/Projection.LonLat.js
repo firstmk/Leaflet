@@ -1,6 +1,6 @@
-import {LatLng} from '../LatLng';
-import {Bounds} from '../../geometry/Bounds';
-import {Point} from '../../geometry/Point';
+import { LatLng } from '../LatLng'
+import { Bounds } from '../../geometry/Bounds'
+import { Point } from '../../geometry/Point'
 
 /*
  * @namespace Projection
@@ -16,13 +16,13 @@ import {Point} from '../../geometry/Point';
  */
 
 export var LonLat = {
-	project: function (latlng) {
-		return new Point(latlng.lng, latlng.lat);
-	},
+  project: function (latlng) {
+    return new Point(latlng.lng, latlng.lat)
+  },
 
-	unproject: function (point) {
-		return new LatLng(point.y, point.x);
-	},
+  unproject: function (point) {
+    return new LatLng(point.y, point.x)
+  },
 
-	bounds: new Bounds([-180, -90], [180, 90])
-};
+  bounds: new Bounds([ -180, -90 ], [ 180, 90 ])
+}

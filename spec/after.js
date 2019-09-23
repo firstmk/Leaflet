@@ -1,1 +1,1 @@
-L.Icon.Default.imagePath = '/base/dist/images/';
+L.Icon.Default.imagePath = '/base/dist/images/'

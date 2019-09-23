@@ -1,9 +1,8 @@
-import {Layer} from '../Layer';
-import * as DomUtil from '../../dom/DomUtil';
-import * as Util from '../../core/Util';
-import * as Browser from '../../core/Browser';
-import {Bounds} from '../../geometry/Bounds';
-
+import { Layer } from '../Layer'
+import * as DomUtil from '../../dom/DomUtil'
+import * as Util from '../../core/Util'
+import * as Browser from '../../core/Browser'
+import { Bounds } from '../../geometry/Bounds'
 
 
 /*
@@ -28,113 +27,113 @@ import {Bounds} from '../../geometry/Bounds';
 
 export var Renderer = Layer.extend({
 
-	// @section
-	// @aka Renderer options
-	options: {
-		// @option padding: Number = 0.1
-		// How much to extend the clip area around the map view (relative to its size)
-		// e.g. 0.1 would be 10% of map view in each direction
-		padding: 0.1,
+  // @section
+  // @aka Renderer options
+  options: {
+    // @option padding: Number = 0.1
+    // How much to extend the clip area around the map view (relative to its size)
+    // e.g. 0.1 would be 10% of map view in each direction
+    padding: 0.1,
 
-		// @option tolerance: Number = 0
-		// How much to extend click tolerance round a path/object on the map
-		tolerance : 0
-	},
+    // @option tolerance: Number = 0
+    // How much to extend click tolerance round a path/object on the map
+    tolerance: 0
+  },
 
-	initialize: function (options) {
-		Util.setOptions(this, options);
-		Util.stamp(this);
-		this._layers = this._layers || {};
-	},
+  initialize: function (options) {
+    Util.setOptions(this, options)
+    Util.stamp(this)
+    this._layers = this._layers || {}
+  },
 
-	onAdd: function () {
-		if (!this._container) {
-			this._initContainer(); // defined by renderer implementations
+  onAdd: function () {
+    if (!this._container) {
+      this._initContainer() // defined by renderer implementations
 
-			if (this._zoomAnimated) {
-				DomUtil.addClass(this._container, 'leaflet-zoom-animated');
-			}
-		}
+      if (this._zoomAnimated) {
+        DomUtil.addClass(this._container, 'leaflet-zoom-animated')
+      }
+    }
 
-		this.getPane().appendChild(this._container);
-		this._update();
-		this.on('update', this._updatePaths, this);
-	},
+    this.getPane().appendChild(this._container)
+    this._update()
+    this.on('update', this._updatePaths, this)
+  },
 
-	onRemove: function () {
-		this.off('update', this._updatePaths, this);
-		this._destroyContainer();
-	},
+  onRemove: function () {
+    this.off('update', this._updatePaths, this)
+    this._destroyContainer()
+  },
 
-	getEvents: function () {
-		var events = {
-			viewreset: this._reset,
-			zoom: this._onZoom,
-			moveend: this._update,
-			zoomend: this._onZoomEnd
-		};
-		if (this._zoomAnimated) {
-			events.zoomanim = this._onAnimZoom;
-		}
-		return events;
-	},
+  getEvents: function () {
+    var events = {
+      viewreset: this._reset,
+      zoom: this._onZoom,
+      moveend: this._update,
+      zoomend: this._onZoomEnd
+    }
+    if (this._zoomAnimated) {
+      events.zoomanim = this._onAnimZoom
+    }
+    return events
+  },
 
-	_onAnimZoom: function (ev) {
-		this._updateTransform(ev.center, ev.zoom);
-	},
+  _onAnimZoom: function (ev) {
+    this._updateTransform(ev.center, ev.zoom)
+  },
 
-	_onZoom: function () {
-		this._updateTransform(this._map.getCenter(), this._map.getZoom());
-	},
+  _onZoom: function () {
+    this._updateTransform(this._map.getCenter(), this._map.getZoom())
+  },
 
-	_updateTransform: function (center, zoom) {
-		var scale = this._map.getZoomScale(zoom, this._zoom),
-		    position = DomUtil.getPosition(this._container),
-		    viewHalf = this._map.getSize().multiplyBy(0.5 + this.options.padding),
-		    currentCenterPoint = this._map.project(this._center, zoom),
-		    destCenterPoint = this._map.project(center, zoom),
-		    centerOffset = destCenterPoint.subtract(currentCenterPoint),
+  _updateTransform: function (center, zoom) {
+    var scale = this._map.getZoomScale(zoom, this._zoom),
+      position = DomUtil.getPosition(this._container),
+      viewHalf = this._map.getSize().multiplyBy(0.5 + this.options.padding),
+      currentCenterPoint = this._map.project(this._center, zoom),
+      destCenterPoint = this._map.project(center, zoom),
+      centerOffset = destCenterPoint.subtract(currentCenterPoint),
 
-		    topLeftOffset = viewHalf.multiplyBy(-scale).add(position).add(viewHalf).subtract(centerOffset);
+      topLeftOffset = viewHalf.multiplyBy(-scale).add(position).add(viewHalf).subtract(centerOffset)
 
-		if (Browser.any3d) {
-			DomUtil.setTransform(this._container, topLeftOffset, scale);
-		} else {
-			DomUtil.setPosition(this._container, topLeftOffset);
-		}
-	},
+    if (Browser.any3d) {
+      DomUtil.setTransform(this._container, topLeftOffset, scale)
+    } else {
+      DomUtil.setPosition(this._container, topLeftOffset)
+    }
+  },
 
-	_reset: function () {
-		this._update();
-		this._updateTransform(this._center, this._zoom);
+  _reset: function () {
+    this._update()
+    this._updateTransform(this._center, this._zoom)
 
-		for (var id in this._layers) {
-			this._layers[id]._reset();
-		}
-	},
+    for (var id in this._layers) {
+      this._layers[ id ]._reset()
+    }
+  },
 
-	_onZoomEnd: function () {
-		for (var id in this._layers) {
-			this._layers[id]._project();
-		}
-	},
+  _onZoomEnd: function () {
+    for (var id in this._layers) {
+      this._layers[ id ]._project()
+    }
+  },
 
-	_updatePaths: function () {
-		for (var id in this._layers) {
-			this._layers[id]._update();
-		}
-	},
+  _updatePaths: function () {
+    for (var id in this._layers) {
+      this._layers[ id ]._update()
+    }
+  },
 
-	_update: function () {
-		// Update pixel bounds of renderer container (for positioning/sizing/clipping later)
-		// Subclasses are responsible of firing the 'update' event.
-		var p = this.options.padding,
-		    size = this._map.getSize(),
-		    min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();
+  _update: function () {
+    // Update pixel bounds of renderer container (for positioning/sizing/clipping later)
+    // Subclasses are responsible of firing the 'update' event.
+    var p = this.options.padding,
+      size = this._map.getSize(),
+      min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round()
 
-		this._bounds = new Bounds(min, min.add(size.multiplyBy(1 + p * 2)).round());
+    this._bounds = new Bounds(min, min.add(size.multiplyBy(1 + p * 2)).round())
 
-		this._center = this._map.getCenter();
-		this._zoom = this._map.getZoom();
-	}
-});
+    this._center = this._map.getCenter()
+    this._zoom = this._map.getZoom()
+  }
+})

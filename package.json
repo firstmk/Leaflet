@@ -49,46 +49,6 @@
     "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map filename=dist/leaflet.js.map --in-source-map dist/leaflet-src.js.map --source-map-url leaflet.js.map --comments",
     "integrity": "node ./build/integrity.js"
   },
-  "eslintConfig": {
-    "root": true,
-    "globals": {
-      "L": true
-    },
-    "env": {
-      "commonjs": true,
-      "amd": true,
-      "node": false
-    },
-    "extends": "mourner",
-    "parserOptions": {
-      "ecmaVersion": 6,
-      "sourceType": "module"
-    },
-    "rules": {
-      "linebreak-style": [
-        0,
-        "unix"
-      ],
-      "no-mixed-spaces-and-tabs": [
-        2,
-        "smart-tabs"
-      ],
-      "indent": [
-        2,
-        "tab",
-        {
-          "VariableDeclarator": 0,
-          "flatTernaryExpressions": true
-        }
-      ],
-      "curly": 2,
-      "spaced-comment": 2,
-      "strict": 0,
-      "wrap-iife": 0,
-      "key-spacing": 0,
-      "consistent-return": 0
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/Leaflet/Leaflet.git"
