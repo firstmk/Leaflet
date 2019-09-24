@@ -249,3 +249,7 @@ export function cancelAnimFrame(id) {
     cancelFn.call(window, id)
   }
 }
+
+export function isEmpty(value) {
+  return value === undefined || value === null
+}

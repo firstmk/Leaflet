@@ -4,6 +4,7 @@ import * as Util from '../core/Util'
 import { toLatLng } from '../geo/LatLng'
 import { toPoint } from '../geometry/Point'
 import * as DomUtil from '../dom/DomUtil'
+import { isEmpty } from '../core/Util'
 
 /*
  * @class DivOverlay
@@ -50,7 +51,9 @@ export var DivOverlay = Layer.extend({
     }
 
     clearTimeout(this._removeTimeout)
-    this.getPane().appendChild(this._container)
+    const pane = this.getPane()
+    if (isEmpty(pane)) return
+    pane.appendChild(this._container)
     this.update()
 
     if (map._fadeAnimated) {

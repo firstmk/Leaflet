@@ -25,8 +25,8 @@ git push --tags -f
 
 echo "Uploading to NPM..."
 
-npm publish
 
+npm publish
 git checkout master
 git branch -D build
 

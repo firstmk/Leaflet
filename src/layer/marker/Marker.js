@@ -4,6 +4,7 @@ import * as Util from '../../core/Util'
 import { toLatLng as latLng } from '../../geo/LatLng'
 import * as DomUtil from '../../dom/DomUtil'
 import { MarkerDrag } from './Marker.Drag'
+import { isEmpty } from '../../core/Util'
 
 /*
  * @class Marker
@@ -257,7 +258,9 @@ export var Marker = Layer.extend({
 
 
     if (addIcon) {
-      this.getPane().appendChild(this._icon)
+      const pane = this.getPane()
+      if (isEmpty(pane)) return
+      pane.appendChild(this._icon)
     }
     this._initInteraction()
     if (newShadow && addShadow) {

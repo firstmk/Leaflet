@@ -1,6 +1,6 @@
 {
   "name": "@waliot/leaflet",
-  "version": "1.5.4",
+  "version": "1.5.5",
   "homepage": "https://leafletjs.com/",
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {

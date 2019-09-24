@@ -3,6 +3,7 @@ import * as DomUtil from '../../dom/DomUtil'
 import * as Util from '../../core/Util'
 import * as Browser from '../../core/Browser'
 import { Bounds } from '../../geometry/Bounds'
+import { isEmpty } from '../../core/Util'
 
 
 /*
@@ -54,8 +55,9 @@ export var Renderer = Layer.extend({
         DomUtil.addClass(this._container, 'leaflet-zoom-animated')
       }
     }
-
-    this.getPane().appendChild(this._container)
+    const pane = this.getPane()
+    if (isEmpty(pane)) return
+    pane.appendChild(this._container)
     this._update()
     this.on('update', this._updatePaths, this)
   },
