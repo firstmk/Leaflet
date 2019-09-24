@@ -228,9 +228,10 @@ export function setTransform(el, offset, scale) {
 // (used by Leaflet internally to position its layers).
 export function setPosition(el, point) {
 
-  /*eslint-disable */
+  if (el === undefined || el === null) return
+  if (point === undefined || point === null) return
+
   el._leaflet_pos = point
-  /* eslint-enable */
 
   if (Browser.any3d) {
     setTransform(el, point)
@@ -245,7 +246,7 @@ export function setPosition(el, point) {
 export function getPosition(el) {
   // this method is only used for elements previously positioned using setPosition,
   // so it's safe to cache the position for performance
-
+  if (el === undefined || el === null) return new Point(0, 0)
   return el._leaflet_pos || new Point(0, 0)
 }
 
